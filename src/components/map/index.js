@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import '../../LeafletPlayback';
 
 export default class Map {
     constructor () {
@@ -11,7 +12,15 @@ export default class Map {
         attribution: '&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 18,
       }).addTo(map);
-      
+      var playbackOptions = {
+        playControl: true,
+        dateControl: true,
+        sliderControl: true
+      };
+
+      // Initialize playback
+      var playback = new L.Playback(map, demoTracks, null, playbackOptions);
+
     }
 
 }

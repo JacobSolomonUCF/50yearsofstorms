@@ -3,6 +3,7 @@
  */
 
 import Map from './components/map'
+window.jQuery = require('jquery');
 
 window.addEventListener('load', () => {
     const map = new Map(document.getElementById('map'));
@@ -10,5 +11,4 @@ window.addEventListener('load', () => {
     // A very simple component setup
     map.render()
   
-
 });

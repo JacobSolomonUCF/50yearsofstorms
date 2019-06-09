@@ -6,7 +6,7 @@ export default class Map {
     }
     
     render () {
-      var map = L.map('map').setView([51.505, -0.09], 13);
+      var map = L.map('map').setView([28.538336, -81.379234], 13);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 18,

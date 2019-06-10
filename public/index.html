@@ -47,6 +47,13 @@
       margin: 0;
       padding: 0;
     }
+    #year-select{
+      position: absolute;
+      width: 100px;
+      right: calc(50% - 100px);
+      bottom: 50px;
+      z-index: 9999;
+    }
     
   </style>
 </head>
@@ -55,6 +62,12 @@
   <header id="header">
     <h1>50 Years of Storms</h1>
   </header>
+  <select id="year-select">
+    <option value="2000">2000</option>
+    <option value="2001">2001</option>
+    <option value="2002">2002</option>
+    <option value="2003">2003</option>
+  </select>
   <div id="map"></div>
 </body>
 </html>

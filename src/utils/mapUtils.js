@@ -4,23 +4,44 @@ import {colorList} from "./colorList";
 /**
  * Get the border width based on Hurricane Category
  * @param {number} wind
- * @return {number} border width for track path
+ * @return {{border: number, display: string}} border width for track path
  */
 function getHurricaneCategory(wind){
   if (wind >= 156){
-    return 8;
+    return {
+      border: 8,
+      display: "CAT 5 Hurricane"
+    };
   }else if (wind >= 131){
-    return 7;
+    return {
+      border: 7,
+      display: "CAT 4 Hurricane"
+    };
   }else if (wind >= 111){
-    return 6;
+    return {
+      border: 6,
+      display: "CAT 3 Hurricane"
+    };
   }else if (wind >= 96){
-    return 5;
+    return {
+      border: 5,
+      display: "CAT 2 Hurricane"
+    };
   }else if (wind >= 74){
-    return 4;
+    return {
+      border: 4,
+      display: "CAT 1 Hurricane"
+    };
   }else if (wind >= 39){
-    return 3;
+    return {
+      border: 3,
+      display: "Tropical Storm"
+    };
   }else{
-    return 2;
+    return {
+      border: 2,
+      display: "Tropical Depression"
+    };
   }
 }
 
@@ -31,26 +52,56 @@ function getHurricaneCategory(wind){
  * @param map 
  */
 export function updateTracks(route,index,map){
-    let windSpeeds = JSON.parse(route.maximumWind);
-    let pressure = JSON.parse(route.minimumPressure);
     let lat = JSON.parse(route.lat);
     let long = JSON.parse(route.long);
-    let maxWind = Math.max.apply(Math, windSpeeds.map((item) => parseInt(item)));
-    let minPressure = Math.min.apply(Math, pressure.filter((item) => parseInt(item) > 0));
-    let latlngs = lat.map((test,index)=> [lat[index],long[index]]);
-    var line = L.polyline(latlngs, {
+    let latLongs = lat.map((test,index)=> [lat[index],long[index]]);
+    
+    let maxWind = getMaxWind(JSON.parse(route.maximumWind));
+    let minPressure = getMinPressure(JSON.parse(route.minimumPressure));
+    const category = getHurricaneCategory(maxWind);
+    
+    var line = L.polyline(latLongs, {
         snakingSpeed: 200,
-        weight: getHurricaneCategory(maxWind),
+        weight: category.border,
         color: colorList[index],
     });
     line.bindPopup(`
       <div class="hurricane-info">
-      Hurricane ${route.name.trim()}<br>
+      ${category.display} ${route.name.trim()}<br>
       Max Wind Speed: ${maxWind} MPH<br> 
       Minimum Pressure: ${isFinite(minPressure) ? minPressure + " millibars" : 'NA'}
       </div>`);
     line.addTo(map).snakeIn();
   }
+
+/**
+ *  Gets Max Wind Speeds
+ * @param windSpeeds
+ * @return {number} Max wind speeds
+ */
+function getMaxWind(windSpeeds){
+  return Math.max.apply(Math, windSpeeds.map((item) => parseInt(item)));
+}
+
+/** 
+ * Gets minPressure
+ * @param pressure
+ * @return {number} minPressure
+ */
+function getMinPressure(pressure){
+  return Math.min.apply(Math, pressure.filter((item) => parseInt(item) > 0));
+}
+
+/**
+ *  Sets the map view to latlng
+ * @param map
+ * @param lat
+ * @param long
+ * @param zoom
+ */
+function setView(map, lat, long, zoom){
+  map.setView([lat, long], zoom);
+}
   
 /**
  *  Removes previous animated tracks
@@ -64,7 +115,7 @@ export function removeMarkers(map){
   });
 }
 
-export function updateList(storms){
+export function updateList(storms,map){
   const listContainer = document.getElementById('list-container');
   listContainer.innerHTML = '';
   let names = storms.map((storm)=> storm.name.trim());
@@ -77,7 +128,10 @@ export function updateList(storms){
     var square = document.createElement('div');
     square.className += ' square';
     square.style.backgroundColor = colorList[i];
-
+    item.id = storms[i].id;
+    
+    // Add listener for click
+    item.addEventListener('click', (e) => listClicked(e,storms,map));
     // Set its contents:
     item.appendChild(square);
     item.appendChild(document.createTextNode(names[i]));
@@ -87,4 +141,33 @@ export function updateList(storms){
   }
   
   listContainer.appendChild(list);
+}
+
+/**
+ * Centers map on storm midpoint and display popup with data
+ * @param e Event
+ * @param storms Storm list
+ * @param map Map Object
+ */
+function listClicked(e, storms,map){
+  const storm = storms.filter((item) => item.id === e.path[0].id)[0];
+  const lat = JSON.parse(storm.lat);
+  const long = JSON.parse(storm.long);
+  let middle  = Math.ceil(lat.length/2);
+  setView(map,lat[middle],long[middle],5);
+
+  let maxWind = getMaxWind(JSON.parse(storm.maximumWind));
+  let minPressure = getMinPressure(JSON.parse(storm.minimumPressure));
+
+  // Adds popup with relevant data
+  L.popup()
+    .setLatLng([lat[middle], long[middle]])
+    .setContent(`
+          <div class="hurricane-info">
+          ${getHurricaneCategory(maxWind).display} ${storm.name.trim()}<br>
+          Max Wind Speed: ${maxWind} MPH<br> 
+          Minimum Pressure: ${isFinite(minPressure) ? minPressure + " millibars" : 'NA'}
+          </div>
+        `)
+    .openOn(map);
 }

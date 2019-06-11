@@ -33,7 +33,7 @@ export default class Map {
         //Updates the UI with the new tracks
         result.Items.map((route,index) => updateTracks(route,index,map));
         //Updates the side list
-        updateList(result.Items);
+        updateList(result.Items,map);
       }
     });
   }

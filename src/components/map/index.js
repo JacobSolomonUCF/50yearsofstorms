@@ -4,7 +4,7 @@ import 'leaflet-bing-layer';
 import 'leaflet.polyline.snakeanim';
 import { invertColors } from '../../utils/colorList';
 import { getHurricanes } from '../../utils/service';
-import { removeMarkers, updateTracks } from '../../utils/mapUtils';
+import { removeMarkers, updateTracks, updateList } from '../../utils/mapUtils';
 
 export default class Map {
   constructor () {
@@ -32,6 +32,8 @@ export default class Map {
       {
         //Updates the UI with the new tracks
         result.Items.map((route,index) => updateTracks(route,index,map));
+        //Updates the side list
+        updateList(result.Items);
       }
     });
   }

@@ -43,7 +43,12 @@ export function updateTracks(route,index,map){
         weight: getHurricaneCategory(maxWind),
         color: colorList[index],
     });
-    line.bindPopup(`<div class="hurricane-info">Hurricane ${route.name.trim()}<br>Max Wind Speed: ${maxWind} MPH<br> Minimum Pressure: ${isFinite(minPressure) ? minPressure + " millibars" : 'NA'}</div></div>`);
+    line.bindPopup(`
+      <div class="hurricane-info">
+      Hurricane ${route.name.trim()}<br>
+      Max Wind Speed: ${maxWind} MPH<br> 
+      Minimum Pressure: ${isFinite(minPressure) ? minPressure + " millibars" : 'NA'}
+      </div>`);
     line.addTo(map).snakeIn();
   }
   
@@ -57,4 +62,29 @@ export function removeMarkers(map){
       map.removeLayer(layer)
     }
   });
+}
+
+export function updateList(storms){
+  const listContainer = document.getElementById('list-container');
+  listContainer.innerHTML = '';
+  let names = storms.map((storm)=> storm.name.trim());
+
+  var list = document.createElement('ul');
+
+  for (var i = 0; i < names.length; i++) {
+    // Create the list item:
+    var item = document.createElement('li');
+    var square = document.createElement('div');
+    square.className += ' square';
+    square.style.backgroundColor = colorList[i];
+
+    // Set its contents:
+    item.appendChild(square);
+    item.appendChild(document.createTextNode(names[i]));
+
+    // Add it to the list:
+    list.appendChild(item);
+  }
+  
+  listContainer.appendChild(list);
 }

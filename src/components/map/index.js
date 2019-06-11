@@ -10,7 +10,7 @@ export default class Map {
   constructor () {
     this.bing = L.tileLayer.bing('AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L');
     this.OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      attribution: '&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 18,
     });
   }

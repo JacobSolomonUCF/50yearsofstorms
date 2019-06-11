@@ -31,22 +31,22 @@ function getHurricaneCategory(wind){
  * @param map 
  */
 export function updateTracks(route,index,map){
-    let str = route.geoJSON.replace(/'/g, '\"');
-    let windSpeeds = JSON.parse(route.maximumWind.replace(/'/g, '\"'));
-    let maxWind = Math.max.apply(Math, windSpeeds.map((item)=> parseInt(item)));
-    let geoJSON = JSON.parse(str);
-    
-    // TODO: Fix the data
-    const x = geoJSON.geometry.coordinates.map((coord)=> [coord[1],coord[0]]);
-    
-    var line = L.polyline(x, {
-      snakingSpeed: 200,
-      weight: getHurricaneCategory(maxWind),
-      color: colorList[index],
+    let windSpeeds = JSON.parse(route.maximumWind);
+    let pressure = JSON.parse(route.minimumPressure);
+    let lat = JSON.parse(route.lat);
+    let long = JSON.parse(route.long);
+    let maxWind = Math.max.apply(Math, windSpeeds.map((item) => parseInt(item)));
+    let minPressure = Math.min.apply(Math, pressure.filter((item) => parseInt(item) > 0));
+    let latlngs = lat.map((test,index)=> [lat[index],long[index]]);
+    var line = L.polyline(latlngs, {
+        snakingSpeed: 200,
+        weight: getHurricaneCategory(maxWind),
+        color: colorList[index],
     });
+    line.bindPopup(`<div class="hurricane-info">Hurricane ${route.name.trim()}<br>Max Wind Speed: ${maxWind} MPH<br> Minimum Pressure: ${isFinite(minPressure) ? minPressure + " millibars" : 'NA'}</div></div>`);
     line.addTo(map).snakeIn();
   }
-
+  
 /**
  *  Removes previous animated tracks
   * @param map

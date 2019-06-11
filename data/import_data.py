@@ -53,10 +53,11 @@ def importData():
                         hour = 0
                         minute = 0
 
-                    hurricanes[row[0]]['geoJSON']['properties']['time'].append(int(datetime.datetime(int(row[2][0:4]),int(row[2][4:6]),int(row[2][6:]),hour,minute).strftime('%s'))*1000)
-                    hurricanes[row[0]]['geoJSON']['geometry']['coordinates'].append([long,lat])
-                    hurricanes[row[0]]['maximumWind'].append(row[8])
-                    hurricanes[row[0]]['minimumPressure'].append(row[9])
+                    hurricanes[row[0]]['time'].append(int(datetime.datetime(int(row[2][0:4]),int(row[2][4:6]),int(row[2][6:]),hour,minute).strftime('%s')))
+                    hurricanes[row[0]]['long'].append(long)
+                    hurricanes[row[0]]['lat'].append(lat)
+                    hurricanes[row[0]]['maximumWind'].append(int(row[8]))
+                    hurricanes[row[0]]['minimumPressure'].append(int(row[9]))
 
                 else:
                     if int(row[3]) == 0:
@@ -84,25 +85,20 @@ def importData():
                         "name": row[1],
                         "year": int(row[2][0:4]),
                         "maximumWind":[
-                            row[8]
+                            int(row[8])
                         ],
                         "minimumPressure": [
-                            row[9]
+                            int(row[9])
                         ],
-                        "geoJSON":{
-                          "type": "Feature",
-                          "geometry": {
-                            "type": "MultiPoint",
-                            "coordinates": [
-                                [long,lat]
-                            ]
-                          },
-                          "properties": {
-                            "time": [
-                                int(datetime.datetime(int(row[2][0:4]),int(row[2][4:6]),int(row[2][6:]),hour,minute).strftime('%s'))*1000
-                            ]
-                          }
-                        }
+                        "lat": [
+                            lat
+                        ],
+                        "long": [
+                            long
+                        ],
+                        "time": [
+                            int(datetime.datetime(int(row[2][0:4]),int(row[2][4:6]),int(row[2][6:]),hour,minute).strftime('%s'))
+                        ]
                     }
                 line_count += 1
         print(f'Processed {line_count} lines.')
@@ -130,7 +126,9 @@ def uploadData():
             table.put_item(
                Item={
                     'id': str(key),
-                    'geoJSON': str(hurricanes[key]['geoJSON']),
+                    'lat': str(hurricanes[key]['lat']),
+                    'long': str(hurricanes[key]['long']),
+                    'time': str(hurricanes[key]['time']),
                     'maximumWind':str(hurricanes[key]['maximumWind']),
                     'minimumPressure':str(hurricanes[key]['minimumPressure']),
                     'name': str(hurricanes[key]['name']),

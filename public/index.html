@@ -8,6 +8,7 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/149af12328.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
         crossorigin=""/>
@@ -63,7 +64,9 @@
       z-index: 9999;
       font-size: 20px;
       padding: 10px;
-      border-radius: 5px;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.5);
     }
     .slider {
       -webkit-appearance: none;
@@ -96,9 +99,7 @@
       cursor: pointer;
     }
     #satellite-checkbox{
-      position: absolute;
       color: #f9f9f9;
-      font-size: 12px;
       top: 82px;
       right: 10px;
       z-index: 9999;
@@ -112,14 +113,32 @@
       top: 175px;
       left: 0;
       z-index: 999;
-      padding-right: 10px;
       color: white;
       text-align: left;
       font-size: 10pt;
       overflow-y: scroll;
-      max-height: 70vh;
+      max-height: 50vh;
+      display: none;
       background-color: rgba(0, 0, 0, 0.5);
       border-radius: 5px;
+    }
+    #options-container{
+      padding: 5px 10px;
+      position: absolute;
+      top: 175px;
+      right: 0;
+      z-index: 999;
+      color: white;
+      text-align: right;
+      font-size: 10pt;
+      overflow-y: scroll;
+      max-height: 50vh;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 5px;
+    }
+    .options-header{
+      font-size: 12pt;
+      text-align: center;
     }
     #list-container > ul{
       list-style: none;
@@ -133,22 +152,103 @@
       margin: 5px;
       border: 1px solid rgba(0, 0, 0, .2);
     }
+    .github{
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      font-size: 30px;
+      color: #f9f9f9;
+    }
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      border-bottom: 1px dotted black;
+    }
+
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 120px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      margin-top: 20px;
+      padding: 5px 0;
+      font-size: 12px;
+
+      /* Position the tooltip */
+      top: -5px;
+      right: 105%;
+      position: absolute;
+      z-index: 9999;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+    }
   </style>
 </head>
 <body>
 <!-- Add your site or application content here -->
   <header id="header">
     <h1>50 Years of Storms</h1>
+    <a href="https://github.com/JacobSolomonUCF/50yearsofstorms" target="_blank">
+      <div class="github">
+        <div class="tooltip">
+          <i class="fab fa-github"></i>
+          <span class="tooltiptext">Checkout the code</span>
+        </div>
+      </div>
+    </a>
   </header>
   <div id="year-container">
     <input id="year-select" type="range" min="1964" max="2015" value="1990" class="slider"><br>
     <span id="year-span">Select a year</span>
   </div>
-  <div id="satellite-checkbox">
-    <span id="satellite-label">Satellite</span>
-    <input type="checkbox" id="satellite-value" checked>
-  </div>
   <div id="list-container"></div>
+  <div id="options-container">
+    <div class="options-header">Options</div>
+    <hr>
+    <div id="satellite-checkbox">
+      <span id="satellite-label">Satellite</span>
+      <input type="checkbox" id="satellite-value" checked>
+    </div>
+    <div>
+      <span>Unnamed Storms</span>
+      <input type="checkbox" id="show-unnamed" checked>
+    </div>
+    <br />
+    <div class="options-header">Filter</div>
+    <hr>
+    <div>
+      <span>CAT 5</span>
+      <input type="checkbox" id="select-CAT5" checked>
+    </div>
+    <div>
+      <span>CAT 4</span>
+      <input type="checkbox" id="select-CAT4" checked>
+    </div>
+    <div>
+      <span>CAT 3</span>
+      <input type="checkbox" id="select-CAT3" checked>
+    </div>
+    <div>
+      <span>CAT 2</span>
+      <input type="checkbox" id="select-CAT2" checked>
+    </div>
+    <div>
+      <span>CAT 1</span>
+      <input type="checkbox" id="select-CAT1" checked>
+    </div>
+    <div>
+      <span>Trop. St.</span>
+      <input type="checkbox" id="select-tropst" checked>
+    </div>
+    <div>
+      <span>Trop. Dp.</span>
+      <input type="checkbox" id="select-tropdp" checked>
+    </div>
+  </div>
   <div id="map"></div>
 </body>
 </html>

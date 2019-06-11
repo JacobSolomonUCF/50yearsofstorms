@@ -12,26 +12,3 @@ export const colorList = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
   '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
   '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3',
   '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
-
-/**
- *  Invert the map UI when switching to/from satellite
- * @param color
- */
-export function invertColors(color){
-  const dark = '#222';
-  const light = '#f9f9f9';
-  const yearContianer = document.getElementById('year-container');
-  const satelliteCheckbox = document.getElementById('satellite-checkbox');
-  const yearSelect  = document.getElementById('year-select');
-  const yearSpan = document.getElementById('year-span');
-  if(color === 'dark'){
-    yearContianer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-    satelliteCheckbox.style.color = dark;
-  }else{
-    satelliteCheckbox.style.color = light;
-    yearSelect.style.background = light;
-    yearSelect.style.color = light;
-    yearSpan.style.color = light;
-  }
-  
-}

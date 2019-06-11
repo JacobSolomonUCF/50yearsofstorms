@@ -20,14 +20,13 @@ export const colorList = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
 export function invertColors(color){
   const dark = '#222';
   const light = '#f9f9f9';
+  const yearContianer = document.getElementById('year-container');
   const satelliteCheckbox = document.getElementById('satellite-checkbox');
   const yearSelect  = document.getElementById('year-select');
   const yearSpan = document.getElementById('year-span');
   if(color === 'dark'){
+    yearContianer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
     satelliteCheckbox.style.color = dark;
-    yearSelect.style.background = dark;
-    yearSelect.style.color = dark;
-    yearSpan.style.color = dark;
   }else{
     satelliteCheckbox.style.color = light;
     yearSelect.style.background = light;

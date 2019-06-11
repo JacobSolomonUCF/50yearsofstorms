@@ -48,21 +48,22 @@
       padding: 0;
     }
     #year-select{
-      position: absolute;
       width: 250px;
-      right: calc(50% - 125px);
-      bottom: 50px;
-      z-index: 9999;
       font-size: 20px;
     }
     #year-span{
       color: #f9f9f9;
+      font-size: 20px;
+    }
+    #year-container{
       position: absolute;
-      width: 250px;
-      right: calc(50% - 125px);
-      bottom: 20px;
+      width: 275px;
+      right: calc(50% - 137px);
+      bottom: 0;
       z-index: 9999;
       font-size: 20px;
+      padding: 10px;
+      border-radius: 5px;
     }
     .slider {
       -webkit-appearance: none;
@@ -139,8 +140,10 @@
   <header id="header">
     <h1>50 Years of Storms</h1>
   </header>
-  <input id="year-select" type="range" min="1964" max="2015" value="1990" class="slider">
-  <span id="year-span">Select a year</span>
+  <div id="year-container">
+    <input id="year-select" type="range" min="1964" max="2015" value="1990" class="slider"><br>
+    <span id="year-span">Select a year</span>
+  </div>
   <div id="satellite-checkbox">
     <span id="satellite-label">Satellite</span>
     <input type="checkbox" id="satellite-value" checked>

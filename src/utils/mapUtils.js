@@ -35,7 +35,10 @@ export function updateTracks(route,index,map){
     let windSpeeds = JSON.parse(route.maximumWind.replace(/'/g, '\"'));
     let maxWind = Math.max.apply(Math, windSpeeds.map((item)=> parseInt(item)));
     let geoJSON = JSON.parse(str);
+    
+    // TODO: Fix the data
     const x = geoJSON.geometry.coordinates.map((coord)=> [coord[1],coord[0]]);
+    
     var line = L.polyline(x, {
       snakingSpeed: 200,
       weight: getHurricaneCategory(maxWind),

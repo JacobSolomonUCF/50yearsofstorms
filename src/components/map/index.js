@@ -14,12 +14,16 @@ export default class Map {
       maxZoom: 18,
     });
   }
-  handleChange(map){
-    // Update UI
+  updateUI(){
     const yearSelect = document.getElementById('year-select');
     const yearSpan = document.getElementById('year-span');
     const year = yearSelect.value;
     yearSpan.innerText = year;
+    return year;
+  }
+  handleChange(map){
+    // Update UI
+    const year = this.updateUI();
 
     //Remove old markers
     removeMarkers(map);
@@ -51,6 +55,7 @@ export default class Map {
       
       document.getElementById('satellite-checkbox').addEventListener("change", (evt) => this.handleMapSwitch(evt,map));
       document.getElementById('year-select').addEventListener("change", (evt) => this.handleChange(map));
+      document.getElementById('year-select').addEventListener("input", ()=>this.updateUI());
     }
 
 }

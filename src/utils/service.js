@@ -1,3 +1,8 @@
+/**
+ * 
+ * @param year to search for
+ * @return List of hurricanes
+ */
 export function getHurricanes(year){
   return fetch(`https://29pbedcrvh.execute-api.us-east-1.amazonaws.com/default/get?year=${year}`)
     .then(response => response.json())

@@ -1,3 +1,7 @@
+/**
+ * Color array for track colors
+ * @type {string[]}
+ */
 export const colorList = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
   '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
   '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
@@ -9,6 +13,10 @@ export const colorList = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
   '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3',
   '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
 
+/**
+ *  Invert the map UI when switching to/from satellite
+ * @param color
+ */
 export function invertColors(color){
   const dark = '#222';
   const light = '#f9f9f9';

@@ -1,6 +1,11 @@
 import L from "leaflet";
 import {colorList} from "./colorList";
 
+/**
+ * Get the border width based on Hurricane Category
+ * @param {number} wind
+ * @return {number} border width for track path
+ */
 function getHurricaneCategory(wind){
   if (wind >= 156){
     return 8;
@@ -19,6 +24,12 @@ function getHurricaneCategory(wind){
   }
 }
 
+/**
+ * Update animated tracks on the map
+ * @param route Hurricane Object
+ * @param index index of hurricane
+ * @param map 
+ */
 export function updateTracks(route,index,map){
     let str = route.geoJSON.replace(/'/g, '\"');
     let windSpeeds = JSON.parse(route.maximumWind.replace(/'/g, '\"'));
@@ -32,7 +43,11 @@ export function updateTracks(route,index,map){
     });
     line.addTo(map).snakeIn();
   }
-  
+
+/**
+ *  Removes previous animated tracks
+  * @param map
+ */  
 export function removeMarkers(map){
   map.eachLayer( function(layer) {
     if ( layer.options &&  layer.options.snakingSpeed) {

@@ -49,7 +49,7 @@ export const mapOptions = [
 export function updateTracks(route,index,map){
     let lat = JSON.parse(route.lat);
     let long = JSON.parse(route.long);
-    let latLongs = lat.map((test,index)=> [lat[index],long[index]]);
+    let latLongs = lat.map((_,index)=> [lat[index],long[index]]);
     
     let maxWind = getMaxWind(JSON.parse(route.maximumWind));
     let minPressure = getMinPressure(JSON.parse(route.minimumPressure));
@@ -60,11 +60,13 @@ export function updateTracks(route,index,map){
         weight: category.border,
         color: colorList[index],
     });
-    line.bindPopup(`
+  const distance = getDistance(line,map);
+  line.bindPopup(`
       <div class="hurricane-info">
       ${category.display} ${route.name.trim()}<br>
       Max Wind Speed: ${maxWind > 0 ? maxWind + " MPH" : 'NA'}<br> 
-      Minimum Pressure: ${isFinite(minPressure) ? minPressure + " millibars" : 'NA'}
+      Minimum Pressure: ${isFinite(minPressure) ? minPressure + " millibars" : 'NA'}<br> 
+      Distance traveled: ${distance} miles
       </div>`);
     line.addTo(map).snakeIn();
   }
@@ -138,6 +140,22 @@ export function updateList(storms,map){
 }
 
 /**
+ *  Returns distance in miles of the polyline
+ * @param layer
+ * @param map
+ * @return {number}
+ */
+export function getDistance(layer,map){
+  let distance = 0.0;
+  layer._latlngs.map((coords,index)=>{
+    if (index === layer._latlngs.length-1){
+      return distance;
+    }
+    distance += map.distance(coords,layer._latlngs[index+1])
+  });
+  return Math.round(distance/1609.344);
+}
+/**
  * Centers map on storm midpoint and display popup with data
  * @param e Event
  * @param storms Storm list
@@ -147,11 +165,18 @@ function listClicked(e, storms,map){
   const storm = storms.filter((item) => item.id === e.path[0].id)[0];
   const lat = JSON.parse(storm.lat);
   const long = JSON.parse(storm.long);
+  const latLongs = lat.map((_,index)=> [lat[index],long[index]]);
   let middle  = Math.ceil(lat.length/2);
   setView(map,lat[middle],long[middle],5);
 
   let maxWind = getMaxWind(JSON.parse(storm.maximumWind));
   let minPressure = getMinPressure(JSON.parse(storm.minimumPressure));
+
+  var line = L.polyline(latLongs, {
+    snakingSpeed: 200,
+  });
+  const distance = getDistance(line,map);
+
 
   // Adds popup with relevant data
   L.popup()
@@ -160,7 +185,8 @@ function listClicked(e, storms,map){
           <div class="hurricane-info">
           ${getHurricaneCategory(maxWind).display} ${storm.name.trim()}<br>
           Max Wind Speed: ${maxWind > 0 ? maxWind + " MPH" : 'NA'}<br> 
-          Minimum Pressure: ${isFinite(minPressure) ? minPressure + " millibars" : 'NA'}
+          Minimum Pressure: ${isFinite(minPressure) ? minPressure + " millibars" : 'NA'}<br> 
+          Distance Traveled: ${distance} miles
           </div>
         `)
     .openOn(map);

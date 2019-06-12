@@ -47,19 +47,19 @@ export const mapOptions = [
  * @param map 
  */
 export function updateTracks(route,index,map){
-    let lat = JSON.parse(route.lat);
-    let long = JSON.parse(route.long);
-    let latLongs = lat.map((_,index)=> [lat[index],long[index]]);
-    
-    let maxWind = getMaxWind(JSON.parse(route.maximumWind));
-    let minPressure = getMinPressure(JSON.parse(route.minimumPressure));
-    const category = getHurricaneCategory(maxWind);
-    
-    var line = L.polyline(latLongs, {
-        snakingSpeed: 200,
-        weight: category.border,
-        color: colorList[index],
-    });
+  let lat = JSON.parse(route.lat);
+  let long = JSON.parse(route.long);
+  let latLongs = lat.map((_,index)=> [lat[index],long[index]]);
+  
+  let maxWind = getMaxWind(JSON.parse(route.maximumWind));
+  let minPressure = getMinPressure(JSON.parse(route.minimumPressure));
+  const category = getHurricaneCategory(maxWind);
+  
+  var line = L.polyline(latLongs, {
+      snakingSpeed: 200,
+      weight: category.border,
+      color: colorList[index],
+  });
   const distance = getDistance(line,map);
   line.bindPopup(`
       <div class="hurricane-info">

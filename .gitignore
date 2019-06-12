@@ -1,5 +1,8 @@
 # IDEA
 .idea/
 
+# Build
+bundle/
+
 # Node Modules
 node_modules/

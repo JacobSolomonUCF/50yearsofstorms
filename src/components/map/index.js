@@ -30,6 +30,17 @@ export default class Map {
    * Add event listeners for filter options
    */
   addOptionListeners(){
+    document.getElementById('select-all').addEventListener("change", (evt)=>{
+       mapOptions.map((option)=>{
+        if(option.name === 'show-unnamed') return;
+         document.getElementById(option.name).checked = evt.target.checked;
+         for (const key in this.options){
+           this.options[key] = evt.target.checked;
+         }
+      });
+      this.handleChange(this.map);
+
+    });
     mapOptions.map((option)=>{
       document.getElementById(option.name).addEventListener("change", (evt) => {
         this.options[option.optionField] = evt.target.checked;

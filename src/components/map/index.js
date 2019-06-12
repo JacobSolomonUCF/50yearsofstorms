@@ -47,6 +47,10 @@ export default class Map {
         this.handleChange(this.map);
       });
     });
+    document.getElementById('expand-options').addEventListener('click', ()=>{
+      document.getElementById('options-container').classList.toggle('show');
+      document.getElementById('expand-options').classList.toggle('show');
+    });
   }
 
   /**

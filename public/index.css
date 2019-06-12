@@ -21,7 +21,7 @@ body, html {
 #header {
   height: 75px;
   padding: 1em;
-  background-color: #222;
+  background-color: rgba(0, 0, 0, 0.9);
   color: #f9f9f9;
   text-align: left;
 }
@@ -105,24 +105,35 @@ body, html {
   border-radius: 5px;
 }
 #options-container{
-  padding: 5px 10px;
-  position: absolute;
-  top: 175px;
-  right: 0;
-  z-index: 999;
-  color: white;
-  text-align: right;
-  font-size: 10pt;
-  overflow-y: scroll;
-  max-height: 60vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
+  padding: 5px 10px 5px 30px;
+  right: -142px;
+  transition: all .75s ease;
 }
+
+.options-thing{
+  padding: 5px 10px 5px 15px;
+  top: 85px;
+  position: absolute;
+  z-index: 999;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 300px;
+  overflow-y: scroll;
+  font-size: 10pt;
+  text-align: right;
+  color: white;
+}
+
+#options-container.show{
+  padding: 5px 10px 5px 15px;
+  right: 0;
+}
+
 .options-header{
   font-size: 12pt;
   text-align: center;
 }
-#list-container > ul{
+#list > ul{
   list-style: none;
   padding: 0;
   margin:0;
@@ -167,4 +178,17 @@ body, html {
 
 .tooltip:hover .tooltiptext {
   visibility: visible;
+}
+
+.expand-icon{
+  position: absolute;
+  bottom: 163px;
+  right: 144px;
+}
+#expand-options{
+  right: 152px;
+  transition: all 1.25s ease;
+}
+#expand-options.show{
+  right: 144px;
 }

@@ -111,8 +111,9 @@ export function removeMarkers(map){
  * @param map
  */
 export function updateList(storms,map){
-  const listContainer = document.getElementById('list-container');
-  listContainer.innerHTML = '';
+  const listItems = document.getElementById('list');
+  const container = document.getElementById('list-container');
+  listItems.innerHTML = '';
   let names = storms.map((storm)=> storm.name.trim());
 
   var list = document.createElement('ul');
@@ -134,9 +135,9 @@ export function updateList(storms,map){
     // Add it to the list:
     list.appendChild(item);
   }
-  
-  listContainer.appendChild(list);
-  listContainer.style.display = 'unset';
+
+  listItems.appendChild(list);
+  container.style.display = 'unset';
 }
 
 /**

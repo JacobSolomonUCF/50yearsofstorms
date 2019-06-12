@@ -5,7 +5,7 @@ Original data source can be found [here](https://www.kaggle.com/noaa/hurricane-d
 
 ![Architecture](https://github.com/JacobSolomonUCF/50yearsofstorms/blob/master/architecture.png?raw=true "Overview")
 
-###Process
+### Process
 The data was parsed using python then was push to a DynamoDB Table. The site is hosted on S3 and server up via Cloudfront. To get the data to the front end there is a API Gateway setup to trigger a Lambda that interacts with the Table. 
 
 ### Running locally

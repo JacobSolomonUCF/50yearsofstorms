@@ -1,17 +1,16 @@
-# 50 Years of Storms
+# [50 Years of Storms](https://50yearsofstorms.com/)
+(1964-2015) Atlantic hurricane data presented in a interactive way.
 
-### First
+Original data source can be found [here](https://www.kaggle.com/noaa/hurricane-database)
 
-Install deps from project root `yarn` or `npm i`
+![Architecture](https://github.com/JacobSolomonUCF/50yearsofstorms/blob/master/architecture.png?raw=true "Overview")
 
-### Start development server with:
+###Process
+The data was parsed using python then was push to a DynamoDB Table. The site is hosted on S3 and server up via Cloudfront. To get the data to the front end there is a API Gateway setup to trigger a Lambda that interacts with the Table. 
 
-`yarn start:dev` or `npm run start:dev`
-
-It's possible to use a different port by specifying this first like so: 
-
-`CVA_PORT=7788 yarn start:dev` to start with port 7788. Same for npm just include `CVA_PORT=7788` at the beginning.
-
-### Build for production
-
-`yarn build` or `npm run build`
+### Running locally
+ `$ npm i`
+ `$ npm run start:dev`
+ 
+### Building for deployment
+  `$ npm run build`

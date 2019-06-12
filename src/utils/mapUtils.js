@@ -1,5 +1,4 @@
 import L from "leaflet";
-import {colorList} from "./colorList";
 
 /**
  *  Mapping of map options fields and inputs
@@ -58,7 +57,7 @@ export function updateTracks(route,index,map){
   var line = L.polyline(latLongs, {
       snakingSpeed: 200,
       weight: category.border,
-      color: colorList[index],
+      color: route.color,
   });
   const distance = getDistance(line,map);
   line.bindPopup(`
@@ -94,15 +93,39 @@ export function filterStorms(storms,options){
 }
 
 /**
- *  Removes previous animated tracks
-  * @param map
+ *  Removes previous animated tracks if they are not apart of the new track array
+ * @param map
+ * @param newTracks
  */  
-export function removeMarkers(map){
+export function removeMarkers(map, newTracks){
+  let toBeRemoved = [];
   map.eachLayer( function(layer) {
     if ( layer.options &&  layer.options.snakingSpeed) {
-      map.removeLayer(layer)
+      const isOnMap = newTracks.filter((route)=>{
+        let lat = JSON.parse(route.lat);
+        let long = JSON.parse(route.long);
+        let latLongs = lat.map((_,index)=> [lat[index],long[index]]);
+        
+        const layerLen = layer._latlngs[0].length;
+        const latLongsLen = latLongs.length;
+        
+        // Check if layer is already on the map by checking first and last geo coords
+        if(layer._latlngs[0][0].lat === latLongs[0][0] && layer._latlngs[0][0].lng === latLongs[0][1] &&
+          layer._latlngs[0][layerLen-1].lat === latLongs[latLongsLen-1][0] &&
+          layer._latlngs[0][layerLen-1].lng === latLongs[latLongsLen-1][1]){
+          return true;
+        }else{
+          return false;
+        }
+      });
+      if(isOnMap.length === 0){
+        map.removeLayer(layer);
+      }else{
+        toBeRemoved.push(isOnMap[0].id);
+      }
     }
   });
+  return toBeRemoved;
 }
 
 /**
@@ -123,7 +146,7 @@ export function updateList(storms,map){
     var item = document.createElement('li');
     var square = document.createElement('div');
     square.className += ' square';
-    square.style.backgroundColor = colorList[i];
+    square.style.backgroundColor = storms[i].color;
     item.id = storms[i].id;
     
     // Add listener for click
@@ -156,6 +179,7 @@ export function getDistance(layer,map){
   });
   return Math.round(distance/1609.344);
 }
+
 /**
  * Centers map on storm midpoint and display popup with data
  * @param e Event

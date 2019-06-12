@@ -5,7 +5,9 @@
   "scripts": {
     "build": "webpack-cli",
     "start:dev": "NODE_ENV=development webpack-dev-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "aws s3 sync public/ s3://50yearsofstorms.com --profile personal",
+    "invalidate": "aws cloudfront create-invalidation --distribution-id E1ECHQBCR5GHA4  --paths \"/*\" --profile personal"
   },
   "dependencies": {
     "jquery": "^3.4.1",

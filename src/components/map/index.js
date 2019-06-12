@@ -3,8 +3,12 @@ import 'leaflet-bing-layer';
 import 'leaflet.polyline.snakeanim';
 import { getHurricanes } from '../../utils/service';
 import { removeMarkers, updateTracks, updateList, filterStorms, mapOptions } from '../../utils/mapUtils';
+import {colorList} from "../../utils/colorList";
 
 export default class Map {
+  /**
+   * Setups the options, different layers and map
+   */
   constructor () {
     this.bing = L.tileLayer.bing('AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L');
     this.OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -63,30 +67,58 @@ export default class Map {
     yearSpan.innerText = year;
     return year;
   }
+
+  /**
+   * Handles the slider event change
+   * Fetch data if need and renders paths
+   * @param map
+   */
   handleChange(map){
     // Update UI
     const year = this.updateUI();
-
-    //Remove old markers
-    removeMarkers(map);
-    // Fetch Data
+    
+    // Checks if data is in state (cache)
     if(this.state[year]){
       this.updateFromCache(this.state[year],this.options,map);
     }else{
       const self = this;
       getHurricanes(year).then(function (result) {
-        // Adds items to our state (cache)
-        self.state[year] = result.Items;
+        // Adds items to our state (cache) with colored path
+        self.state[year] = result.Items.map((item,index)=>{
+          item.color = colorList[index];
+          return item;
+        });
         self.updateFromCache(self.state[year],self.options,map);
       });
     }
   }
+
+  /**
+   *  Filters storms based on options
+   *  Check if new storms are already on map to prevent double loading
+   *  Removes storms that are no longer need
+   *  Renders additional new storms
+   * @param storms
+   * @param options
+   * @param map
+   */
   updateFromCache(storms,options,map){
     // Filter based on options
     const filtered = filterStorms(storms,options);
-    
-    // No need to fetch data we have in the state (cache)
-    filtered.map((route,index) => updateTracks(route,index,map));
+    // Checks to see if any new storms are already rendered
+    let alreadyOnMap = removeMarkers(map,filtered);
+    // Filters list to new storms that are not on the map
+    const toRender = filtered.filter((route,index)=>{
+      const found = alreadyOnMap.find((id) => {
+        return id === filtered[index].id;
+      });
+      if(found){
+        return false
+      }else{
+        return true;
+      }
+    });
+    toRender.map((route,index) => updateTracks(route,index,map));
     updateList(filtered,map);
   }
 
@@ -104,6 +136,10 @@ export default class Map {
       map.removeLayer(this.bing);
     }
   }
+
+  /**
+   * Renders the map & Adds event listeners
+   */
   render () {
       const map = this.map;
       map.addLayer(this.bing);

@@ -10,6 +10,7 @@ html {
 }
 
 body, html {
+  overflow: hidden;
   font-family: 'Open Sans', san-sserif;
   color: black;
   background-color: #999;

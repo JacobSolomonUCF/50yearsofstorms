@@ -35,7 +35,7 @@ const config = function (mode) {
         ]
         },
         output: {
-            path: path.resolve(__dirname, 'public/bundle/'),
+            path: path.resolve(__dirname, 'public/'),
             filename: 'bundle.js',
             publicPath: '/',
         },

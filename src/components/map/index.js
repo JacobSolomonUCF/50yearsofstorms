@@ -1,5 +1,4 @@
 import L from 'leaflet';
-import '../../LeafletPlayback';
 import 'leaflet-bing-layer';
 import 'leaflet.polyline.snakeanim';
 import { getHurricanes } from '../../utils/service';

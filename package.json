@@ -10,7 +10,7 @@
     "invalidate": "aws cloudfront create-invalidation --distribution-id E1ECHQBCR5GHA4  --paths \"/*\" --profile personal"
   },
   "dependencies": {
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "leaflet": "^1.5.1",
     "leaflet-bing-layer": "^3.3.1",
     "leaflet.polyline.snakeanim": "^0.2.0"
